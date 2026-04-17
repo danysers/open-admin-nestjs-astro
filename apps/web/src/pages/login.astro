@@ -1,0 +1,74 @@
+---
+export const prerender = false;
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - OpenAdmin</title>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <h1 class="text-2xl font-bold text-center mb-6 text-indigo-600">OpenAdmin</h1>
+    <form id="login-form" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+        <input type="text" id="username" name="username" required
+          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+        <input type="password" id="password" name="password" required
+          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+      <div id="error" class="text-red-600 text-sm hidden"></div>
+      <button type="submit" id="submit-btn"
+        class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 font-medium">
+        Login
+      </button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('login-form') as HTMLFormElement;
+    const error = document.getElementById('error') as HTMLDivElement;
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      error.classList.add('hidden');
+      submitBtn.textContent = 'Loading...';
+      submitBtn.disabled = true;
+
+      const username = (document.getElementById('username') as HTMLInputElement).value;
+      const password = (document.getElementById('password') as HTMLInputElement).value;
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+        const json = await res.json();
+
+        if (json.code === 200 && json.data?.token) {
+          localStorage.setItem('token', json.data.token);
+          localStorage.setItem('user', JSON.stringify(json.data.user));
+          window.location.href = '/admin/dashboard';
+        } else {
+          error.textContent = json.message || 'Login failed';
+          error.classList.remove('hidden');
+        }
+      } catch (err) {
+        error.textContent = 'Network error';
+        error.classList.remove('hidden');
+      } finally {
+        submitBtn.textContent = 'Login';
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
