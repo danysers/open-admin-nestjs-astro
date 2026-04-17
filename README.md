@@ -2,6 +2,12 @@
 
 Admin panel builder migrated from PHP/Laravel to Node.js stack.
 
+## 🌐 Live Demo
+
+- **URL**: https://core.codss.com.ar
+- **Login**: https://core.codss.com.ar/login
+- **Credentials**: `admin` / `admin123` (after running seed)
+
 ## Stack
 
 - **API**: NestJS 11 + Prisma + PostgreSQL
