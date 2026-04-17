@@ -6,6 +6,7 @@
   "scripts": {
     "build": "nest build && mkdir -p dist/src/generated && cp -R src/generated/prisma dist/src/generated/prisma",
     "start": "nest start",
+    "start:prod": "prisma generate && node dist/src/main.js",
     "dev": "nest start --watch",
     "dev:db": "prisma studio",
     "db:push": "prisma db push",

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "steps": {
+    "install": {
+      "commands": [
+        "npm install -g pnpm@10.33.0",
+        "pnpm install --frozen-lockfile"
+      ]
+    },
+    "build-shared": {
+      "inputs": [{ "step": "install" }],
+      "commands": [
+        "pnpm --filter @openadmin/shared build"
+      ]
+    },
+    "build-web": {
+      "inputs": [{ "step": "build-shared" }],
+      "commands": [
+        "pnpm --filter @openadmin/web build"
+      ]
+    }
+  },
+  "deploy": {
+    "startCommand": "pnpm --filter @openadmin/web start"
+  }
+}
