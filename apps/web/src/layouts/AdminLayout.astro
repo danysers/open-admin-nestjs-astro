@@ -57,13 +57,45 @@ const { title } = Astro.props;
   </div>
 
   <script>
-    // Check auth
-    const token = localStorage.getItem('token');
-    if (!token) {
-      window.location.href = '/login';
+    function checkAuth() {
+      const accessToken = localStorage.getItem('accessToken');
+      const expiresAt = localStorage.getItem('expiresAt');
+      
+      if (!accessToken) {
+        window.location.href = '/login';
+        return false;
+      }
+      
+      if (expiresAt && Date.now() > parseInt(expiresAt)) {
+        const refreshToken = localStorage.getItem('refreshToken');
+        if (refreshToken) {
+          fetch('/api/auth/refresh', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ refreshToken }),
+          }).then(r => r.json()).then(data => {
+            if (data.code === 200 && data.data?.accessToken) {
+              localStorage.setItem('accessToken', data.data.accessToken);
+              localStorage.setItem('refreshToken', data.data.refreshToken);
+              localStorage.setItem('expiresAt', Date.now() + 3600000);
+            } else {
+              localStorage.clear();
+              window.location.href = '/login';
+            }
+          }).catch(() => {
+            localStorage.clear();
+            window.location.href = '/login';
+          });
+        } else {
+          localStorage.clear();
+          window.location.href = '/login';
+        }
+      }
+      return true;
     }
 
-    // Show user info
+    checkAuth();
+
     const user = localStorage.getItem('user');
     if (user) {
       try {
@@ -72,10 +104,8 @@ const { title } = Astro.props;
       } catch(e) {}
     }
 
-    // Logout
     document.getElementById('logout-btn').addEventListener('click', () => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      localStorage.clear();
       window.location.href = '/login';
     });
   </script>
