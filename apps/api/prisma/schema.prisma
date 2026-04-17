@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id             Int             @id @default(autoincrement())
+  username       String          @unique
+  email          String          @unique
+  password       String
+  name           String?
+  avatar         String?
+  remember_token String?
+  created_at     DateTime        @default(now())
+  updated_at     DateTime        @updatedAt
+  roles          roles[]
+  operation_logs operation_log[]
+}
+
+model roles {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  slug        String       @unique
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  permissions role_permissions[]
+  users       users[]
+}
+
+model permissions {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  slug        String   @unique
+  http_path   String?
+  http_method String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  roles      role_permissions[]
+}
+
+model role_permissions {
+  role_id       Int
+  permission_id Int
+  role          roles       @relation(fields: [role_id], references: [id])
+  permission    permissions @relation(fields: [permission_id], references: [id])
+
+  @@id([role_id, permission_id])
+}
+
+model menu {
+  id         Int      @id @default(autoincrement())
+  parent_id  Int?
+  order      Int      @default(0)
+  title      String
+  icon       String?
+  uri        String?
+  permission String?
+  label      String?
+  target     String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  parent     menu?    @relation("MenuChildren", fields: [parent_id], references: [id])
+  children   menu[]    @relation("MenuChildren")
+}
+
+model operation_log {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  method     String
+  uri        String
+  ip         String
+  input      Json?
+  created_at DateTime @default(now())
+  user       users    @relation(fields: [user_id], references: [id])
+}

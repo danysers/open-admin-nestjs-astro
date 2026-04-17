@@ -1,0 +1,24 @@
+---
+
+---
+
+<Layout title="Admin">
+  <div class="min-h-screen bg-gray-100">
+    <nav class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <span class="text-xl font-bold text-indigo-600">OpenAdmin</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <a href="/admin" class="text-gray-700 hover:text-indigo-600">Dashboard</a>
+            <button class="text-gray-700 hover:text-indigo-600">Logout</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <main class="p-6">
+      <slot />
+    </main>
+  </div>
+</Layout>

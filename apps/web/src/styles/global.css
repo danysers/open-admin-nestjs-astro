@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: 238, 100%, 61%;
+  --color-secondary: 217, 32%, 17%;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+}

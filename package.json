@@ -1,0 +1,12 @@
+{
+  "name": "open-admin-migration",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev:api": "cd apps/api && pnpm dev",
+    "dev:web": "cd apps/web && pnpm dev",
+    "build": "pnpm --filter @openadmin/api build && pnpm --filter @openadmin/web build",
+    "build:shared": "pnpm --filter @openadmin/shared build"
+  },
+  "packageManager": "pnpm@10.33.0"
+}

@@ -1,0 +1,12 @@
+---
+export const prerender = false;
+import Layout from '../../layouts/Layout.astro';
+const { slug } = Astro.params;
+---
+
+<Layout title={slug ? slug.toUpperCase() : 'Admin'}>
+  <div>
+    <h1 class="text-2xl font-bold mb-6">{slug ? slug.charAt(0).toUpperCase() + slug.slice(1) : 'Admin'} Management</h1>
+    <div id="grid-root" data-resource={slug || 'users'}></div>
+  </div>
+</Layout>
