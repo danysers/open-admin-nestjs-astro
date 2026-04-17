@@ -34,7 +34,7 @@ services:
       POSTGRES_PASSWORD: openadmin_pass_2026
       POSTGRES_DB: openadmin
     ports:
-      - "5432:5432"
+      - "55432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -47,7 +47,7 @@ services:
     image: redis:7-alpine
     container_name: openadmin-redis
     ports:
-      - "6379:6379"
+      - "56379:6379"
     command: redis-server --requirepass openadmin_redis_2026
     volumes:
       - redis_data:/data

@@ -5,15 +5,15 @@ Admin panel builder migrated from PHP/Laravel to Node.js stack.
 ## 🌐 Live Demo
 
 - **URL**: https://core.codss.com.ar
-- **Login**: https://core.codss.com.ar/login
-- **Credentials**: `admin` / `admin123` (after running seed)
+- **Login**: https://core.codss.com.ar/
+- **Credentials**: `admin@example.com` / `admin123` for Better Auth, and `admin` / `admin123` for legacy data
 
 ## Stack
 
 - **API**: NestJS 11 + Prisma + PostgreSQL
 - **Cache/Sessions**: Redis (ioredis)
 - **Frontend**: Astro 6 (SSR) + React 19 + Tailwind CSS
-- **Auth**: JWT + bcrypt + refresh tokens
+- **Auth**: Better Auth + bcrypt + cookie sessions + TOTP 2FA
 
 ## Quick Start
 
@@ -27,14 +27,15 @@ pnpm install
 ### 2. Environment
 ```bash
 cp apps/api/.env.example apps/api/.env
-# Edit DATABASE_URL and REDIS_URL
+# Default local ports avoid collisions: PostgreSQL 55432, Redis 56379
+# Edit DATABASE_URL and REDIS_URL if needed
 ```
 
 ### 3. Database
 ```bash
 cd apps/api
 pnpm db:push     # Create tables
-pnpm db:seed     # Seed admin user (admin / admin123)
+pnpm db:seed     # Seed Better Auth admin (admin@example.com / admin123)
 ```
 
 ### 4. Run
@@ -47,9 +48,9 @@ cd apps/web && pnpm dev
 ```
 
 ### 5. Test
-- Login: http://localhost:4321/login
+- Login: http://localhost:4321/
 - Dashboard: http://localhost:4321/admin/dashboard
-- API: http://localhost:3000/api/auth/me
+- API session: http://localhost:3000/api/auth/get-session
 
 ## Docker
 
@@ -59,9 +60,8 @@ docker-compose up -d
 
 ## Features
 
-- Secure login with rate limiting (5 attempts → 5 min lockout)
-- Refresh token rotation (30 days)
-- Access token: 1h (7 days with "remember me")
+- Better Auth email/password login with cookie sessions
+- TOTP 2FA with QR setup and backup codes
 - Grid component with TanStack Table
 - Form builder with React Hook Form + Zod
 - Tree view for nested data
@@ -71,10 +71,10 @@ docker-compose up -d
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | /api/auth/login | Login |
-| POST | /api/auth/refresh | Refresh token |
-| POST | /api/auth/logout | Logout |
-| GET | /api/auth/me | Current user |
+| POST | /api/auth/sign-in/email | Login |
+| POST | /api/auth/two-factor/enable | Enable TOTP 2FA |
+| POST | /api/auth/two-factor/verify | Verify TOTP |
+| GET | /api/auth/get-session | Current session |
 | GET | /api/grids/:resource | List resource |
 | GET | /api/users | Users CRUD |
 | GET | /api/roles | Roles CRUD |

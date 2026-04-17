@@ -4,7 +4,7 @@
   "description": "OpenAdmin NestJS API",
   "main": "dist/main.js",
   "scripts": {
-    "build": "nest build",
+    "build": "nest build && mkdir -p dist/src/generated && cp -R src/generated/prisma dist/src/generated/prisma",
     "start": "nest start",
     "dev": "nest start --watch",
     "dev:db": "prisma studio",

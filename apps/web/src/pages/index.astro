@@ -1,24 +1,17 @@
 ---
 export const prerender = false;
+import '../styles/global.css';
+import { LoginPage } from '@/components/auth/LoginPage';
 ---
+
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>OpenAdmin</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
-</head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-  <div class="text-center">
-    <h1 class="text-4xl font-bold text-indigo-600 mb-4">OpenAdmin</h1>
-    <p class="text-gray-600 mb-8">Admin Panel Builder — NestJS + Astro</p>
-    <a href="/login" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-medium">
-      Login to Dashboard
-    </a>
-  </div>
-  <script>
-    const token = localStorage.getItem('token');
-    if (token) window.location.href = '/admin/dashboard';
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - OpenAdmin</title>
+  </head>
+  <body>
+    <LoginPage client:only="react" />
+  </body>
 </html>
