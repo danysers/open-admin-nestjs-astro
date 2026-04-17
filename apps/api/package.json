@@ -23,6 +23,7 @@
     "@prisma/client": "^6.0.0",
     "axios": "^1.7.0",
     "bcrypt": "^6.0.0",
+    "better-auth": "1.5.4",
     "cache-manager": "^7.2.8",
     "casl": "^1.1.0",
     "ioredis": "^5.10.1",

@@ -37,17 +37,17 @@ export function UsersGrid() {
   });
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (!accessToken) { window.location.href = '/login'; return; }
     setLoading(true);
     fetch(`/api/grids/users?page=${page}&perPage=${pageSize}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      credentials: 'include',
     })
       .then(r => r.json())
       .then(r => {
         if (r.code === 200) {
           setUsers(r.data?.data || []);
           setTotal(r.data?.total || 0);
+        } else if (r.statusCode === 401) {
+          window.location.href = '/login';
         }
       })
       .catch(console.error)

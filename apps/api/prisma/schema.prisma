@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -22,24 +23,24 @@ model users {
 }
 
 model roles {
-  id          Int          @id @default(autoincrement())
-  name        String       @unique
-  slug        String       @unique
-  created_at  DateTime     @default(now())
-  updated_at  DateTime     @updatedAt
+  id          Int                @id @default(autoincrement())
+  name        String             @unique
+  slug        String             @unique
+  created_at  DateTime           @default(now())
+  updated_at  DateTime           @updatedAt
   permissions role_permissions[]
   users       users[]
 }
 
 model permissions {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
-  slug        String   @unique
+  id          Int                @id @default(autoincrement())
+  name        String             @unique
+  slug        String             @unique
   http_path   String?
   http_method String?
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  roles      role_permissions[]
+  created_at  DateTime           @default(now())
+  updated_at  DateTime           @updatedAt
+  roles       role_permissions[]
 }
 
 model role_permissions {
@@ -64,7 +65,7 @@ model menu {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   parent     menu?    @relation("MenuChildren", fields: [parent_id], references: [id])
-  children   menu[]    @relation("MenuChildren")
+  children   menu[]   @relation("MenuChildren")
 }
 
 model operation_log {
@@ -76,4 +77,76 @@ model operation_log {
   input      Json?
   created_at DateTime @default(now())
   user       users    @relation(fields: [user_id], references: [id])
+}
+
+model authUser {
+  id               String        @id @default(cuid())
+  email            String        @unique
+  name             String        @default("")
+  emailVerified    Boolean       @default(false)
+  image            String?
+  twoFactorEnabled Boolean       @default(false)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  accounts         authAccount[]
+  sessions         authSession[]
+  twoFactor        authTwoFactor?
+
+  @@map("auth_users")
+}
+
+model authAccount {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  authUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@map("auth_accounts")
+}
+
+model authSession {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      authUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("auth_sessions")
+}
+
+model authVerification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("auth_verifications")
+}
+
+model authTwoFactor {
+  id          String   @id @default(cuid())
+  secret      String
+  backupCodes String
+  enabled     Boolean  @default(true)
+  userId      String   @unique
+  user        authUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("auth_two_factors")
 }

@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../../generated/prisma/index';
 
 @Injectable()
 export class RbacGuard implements CanActivate {

@@ -1,4 +1,5 @@
 ---
+import '../styles/global.css';
 interface Props {
   title: string;
 }
@@ -11,7 +12,6 @@ const { title } = Astro.props;
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title} - OpenAdmin</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
 </head>
 <body class="bg-gray-100 min-h-screen">
   <div class="flex h-screen">
@@ -57,57 +57,39 @@ const { title } = Astro.props;
   </div>
 
   <script>
-    function checkAuth() {
-      const accessToken = localStorage.getItem('accessToken');
-      const expiresAt = localStorage.getItem('expiresAt');
-      
-      if (!accessToken) {
-        window.location.href = '/login';
-        return false;
-      }
-      
-      if (expiresAt && Date.now() > parseInt(expiresAt)) {
-        const refreshToken = localStorage.getItem('refreshToken');
-        if (refreshToken) {
-          fetch('/api/auth/refresh', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ refreshToken }),
-          }).then(r => r.json()).then(data => {
-            if (data.code === 200 && data.data?.accessToken) {
-              localStorage.setItem('accessToken', data.data.accessToken);
-              localStorage.setItem('refreshToken', data.data.refreshToken);
-              localStorage.setItem('expiresAt', Date.now() + 3600000);
-            } else {
-              localStorage.clear();
-              window.location.href = '/login';
-            }
-          }).catch(() => {
-            localStorage.clear();
-            window.location.href = '/login';
-          });
-        } else {
-          localStorage.clear();
-          window.location.href = '/login';
-        }
-      }
-      return true;
-    }
+    const userInfo = document.getElementById('user-info');
+    const logoutBtn = document.getElementById('logout-btn');
 
-    checkAuth();
-
-    const user = localStorage.getItem('user');
-    if (user) {
+    async function loadSession() {
       try {
-        const userData = JSON.parse(user);
-        document.getElementById('user-info').textContent = userData.username || 'Admin';
-      } catch(e) {}
+        const response = await fetch('/api/auth/get-session', {
+          credentials: 'include',
+        });
+        const session = await response.json();
+
+        if (!session?.user) {
+          window.location.href = '/login';
+          return;
+        }
+
+        userInfo.textContent = session.user.name || session.user.email || 'Admin';
+      } catch {
+        window.location.href = '/login';
+      }
     }
 
-    document.getElementById('logout-btn').addEventListener('click', () => {
-      localStorage.clear();
-      window.location.href = '/login';
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        await fetch('/api/auth/sign-out', {
+          method: 'POST',
+          credentials: 'include',
+        });
+      } finally {
+        window.location.href = '/login';
+      }
     });
+
+    loadSession();
   </script>
 </body>
 </html>

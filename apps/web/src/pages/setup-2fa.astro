@@ -1,0 +1,17 @@
+---
+export const prerender = false;
+import '../styles/global.css';
+import { SetupTwoFactorPage } from '@/components/auth/SetupTwoFactorPage';
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup 2FA - OpenAdmin</title>
+</head>
+<body>
+  <SetupTwoFactorPage client:only="react" />
+</body>
+</html>

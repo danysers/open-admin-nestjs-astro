@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../src/generated/prisma/index';
 import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -17,6 +17,37 @@ async function seed() {
   });
 
   console.log('✅ Role created:', adminRole.name);
+
+  const authPassword = await bcrypt.hash('admin123', 12);
+  const authAdmin = await prisma.authUser.upsert({
+    where: { email: 'admin@example.com' },
+    update: {},
+    create: {
+      email: 'admin@example.com',
+      name: 'OpenAdmin Admin',
+      emailVerified: true,
+    },
+  });
+
+  await prisma.authAccount.upsert({
+    where: {
+      providerId_accountId: {
+        providerId: 'credential',
+        accountId: 'admin@example.com',
+      },
+    },
+    update: {
+      password: authPassword,
+    },
+    create: {
+      userId: authAdmin.id,
+      providerId: 'credential',
+      accountId: 'admin@example.com',
+      password: authPassword,
+    },
+  });
+
+  console.log('✅ Better Auth admin created: admin@example.com / admin123');
 
   // Create admin user
   const adminPassword = await bcrypt.hash('admin123', 10);
