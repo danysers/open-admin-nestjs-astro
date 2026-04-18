@@ -6,25 +6,16 @@ interface Props {
 
 export const AuthLayout = ({ children }: Props) => {
   return (
-    <div className="container relative min-h-screen flex-col items-center justify-center flex lg:max-w-none lg:grid lg:grid-cols-2 lg:px-0 w-full">
-      <div className="relative hidden h-full flex-col p-10 text-primary dark:border-r lg:flex">
-        <div className="absolute inset-0 bg-muted" />
-        <div className="relative z-20 flex items-center text-lg font-medium gap-4 text-primary">
-          <div className="size-10 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
-            OA
-          </div>
-          OpenAdmin
+    <div className="min-h-screen bg-[#f4f6f9] px-4 py-8">
+      <div className="mx-auto max-w-[420px]">
+        <div className="mb-4 text-center">
+          <a href="/" className="text-[28px] font-semibold text-[#2c3e50] no-underline">
+            <span className="text-[#3a96ff]">Open</span>Admin
+          </a>
+          <p className="mt-1 text-sm text-[#6c757d]">Administration panel</p>
         </div>
-        <div className="relative z-20 mt-auto">
-          <blockquote className="space-y-2">
-            <p className="text-lg text-primary">
-              "The powerful admin panel builder with modern authentication."
-            </p>
-          </blockquote>
-        </div>
-      </div>
-      <div className="w-full">
-        <div className="flex w-full flex-col justify-center space-y-6 max-w-lg mx-auto p-6">
+
+        <div className="rounded-xl border border-[#e2e8f0] bg-white p-6 shadow-sm">
           {children}
         </div>
       </div>

@@ -14,11 +14,9 @@ export function LoginPage() {
   if (showEnable2FA) {
     return (
       <AuthLayout>
-        <div className="mb-6 flex flex-col space-y-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">Setup 2FA</h1>
-          <p className="text-sm text-muted-foreground">
-            Secure your account with two-factor authentication
-          </p>
+        <div className="mb-5 text-center">
+          <h1 className="text-xl font-semibold text-[#2c3e50]">Two-factor setup</h1>
+          <p className="mt-1 text-sm text-[#6c757d]">Secure your account with an authenticator app.</p>
         </div>
         <Enable2FA
           onEnabled={() => {
@@ -37,18 +35,9 @@ export function LoginPage() {
 
   return (
     <AuthLayout>
-      <div className="mb-6 flex flex-col space-y-2 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          <span className="flex flex-row items-center justify-center gap-2">
-            <span className="flex size-12 items-center justify-center rounded-lg bg-primary text-lg font-bold text-primary-foreground">
-              OA
-            </span>
-            Sign in
-          </span>
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Enter your email and password to sign in
-        </p>
+      <div className="mb-5 text-center">
+        <h1 className="text-xl font-semibold text-[#2c3e50]">Sign in</h1>
+        <p className="mt-1 text-sm text-[#6c757d]">Use your admin credentials to continue.</p>
       </div>
 
       {!showTwoFactor ? (
@@ -59,10 +48,8 @@ export function LoginPage() {
       ) : showBackupCode ? (
         <>
           <div className="mb-4 flex flex-col space-y-2 text-center">
-            <h2 className="text-xl font-semibold">Enter Backup Code</h2>
-            <p className="text-sm text-muted-foreground">
-              Enter one of your backup codes to access your account
-            </p>
+            <h2 className="text-lg font-semibold text-[#2c3e50]">Backup code</h2>
+            <p className="text-sm text-[#6c757d]">Enter one backup code to access your account.</p>
           </div>
           <BackupCodeVerify
             onVerifySuccess={() => setIsAuthenticated(true)}
@@ -72,10 +59,8 @@ export function LoginPage() {
       ) : (
         <>
           <div className="mb-4 flex flex-col space-y-2 text-center">
-            <h2 className="text-xl font-semibold">Two-Factor Authentication</h2>
-            <p className="text-sm text-muted-foreground">
-              Enter the code from your authenticator app
-            </p>
+            <h2 className="text-lg font-semibold text-[#2c3e50]">Two-factor authentication</h2>
+            <p className="text-sm text-[#6c757d]">Enter the code from your authenticator app.</p>
           </div>
           <TwoFactorVerify
             onVerifySuccess={() => setIsAuthenticated(true)}
@@ -86,8 +71,8 @@ export function LoginPage() {
       )}
 
       <div className="mt-4 text-center text-sm">
-        <a href="/setup-2fa" className="text-muted-foreground hover:underline">
-          Setup 2FA
+        <a href="/setup-2fa" className="text-[#6c757d] hover:text-[#3a96ff] hover:underline">
+          Set up 2FA
         </a>
       </div>
     </AuthLayout>
