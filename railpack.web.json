@@ -3,6 +3,7 @@
   "steps": {
     "install": {
       "commands": [
+        "COPY . .",
         "pnpm install --frozen-lockfile"
       ]
     },
