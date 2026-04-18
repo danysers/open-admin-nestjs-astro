@@ -3,18 +3,29 @@
   "steps": {
     "install": {
       "commands": [
-        "COPY . .",
+        {
+          "src": ".",
+          "dest": "."
+        },
         "pnpm install --frozen-lockfile"
       ]
     },
     "build-shared": {
-      "inputs": [{ "step": "install" }],
+      "inputs": [
+        {
+          "step": "install"
+        }
+      ],
       "commands": [
         "pnpm --filter @openadmin/shared build"
       ]
     },
     "build-web": {
-      "inputs": [{ "step": "build-shared" }],
+      "inputs": [
+        {
+          "step": "build-shared"
+        }
+      ],
       "commands": [
         "pnpm --filter @openadmin/web build"
       ]
