@@ -19,7 +19,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const targetUrl = `${apiBase.replace(/\/$/, '')}${pathname}${search}`;
   const headers = new Headers(context.request.headers);
   headers.delete('host');
-  headers.set('origin', apiBase);
 
   const init: RequestInit = {
     method: context.request.method,
