@@ -14,11 +14,7 @@
     "build:web": "pnpm --filter @openadmin/web build",
     "build": "pnpm build:shared && pnpm build:api && pnpm build:web",
     "start:api": "pnpm --filter @openadmin/api start:prod",
-    "start:web": "pnpm --filter @openadmin/web start",
-    "test:e2e": "playwright test"
+    "start:web": "pnpm --filter @openadmin/web start"
   },
-  "packageManager": "pnpm@10.33.0",
-  "devDependencies": {
-    "@playwright/test": "^1.59.1"
-  }
+  "packageManager": "pnpm@10.33.0"
 }

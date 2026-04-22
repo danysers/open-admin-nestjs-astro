@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { CardContent, CardDescription } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { authClient } from '@/lib/auth-client';
 
@@ -20,7 +23,6 @@ interface LoginProps {
 export function LoginForm({ onLoginSuccess, onTwoFactorRequired }: LoginProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [rememberMe, setRememberMe] = useState(true);
 
   const form = useForm<LoginForm>({
     resolver: zodResolver(LoginSchema),
@@ -68,17 +70,9 @@ export function LoginForm({ onLoginSuccess, onTwoFactorRequired }: LoginProps) {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-[#495057]">Email</FormLabel>
+                <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <div className="flex h-10 items-center rounded-md border border-[#ced4da] bg-white px-3">
-                    <span className="mr-2 text-[#6c757d]">@</span>
-                    <input
-                      className="h-full w-full border-0 bg-transparent text-sm outline-none"
-                      placeholder="admin@example.com"
-                      autoComplete="email"
-                      {...field}
-                    />
-                  </div>
+                  <Input placeholder="admin@example.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -89,45 +83,20 @@ export function LoginForm({ onLoginSuccess, onTwoFactorRequired }: LoginProps) {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-[#495057]">Password</FormLabel>
+                <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <div className="flex h-10 items-center rounded-md border border-[#ced4da] bg-white px-3">
-                    <span className="mr-2 text-[#6c757d]">*</span>
-                    <input
-                      type="password"
-                      className="h-full w-full border-0 bg-transparent text-sm outline-none"
-                      placeholder="Password"
-                      autoComplete="current-password"
-                      {...field}
-                    />
-                  </div>
+                  <Input type="password" placeholder="Enter your password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-
-          <label className="flex items-center gap-2 text-sm text-[#6c757d]">
-            <input
-              type="checkbox"
-              checked={rememberMe}
-              onChange={(event) => setRememberMe(event.target.checked)}
-              className="h-4 w-4 rounded border-[#ced4da]"
-            />
-            Remember me
-          </label>
-
           {error && (
-            <div className="rounded-md border border-[#f5c2c7] bg-[#f8d7da] px-3 py-2 text-sm text-[#842029]">{error}</div>
+            <div className="text-sm text-red-600 p-2 bg-red-50 rounded">{error}</div>
           )}
-
-          <button
-            className="h-10 w-full rounded-md bg-[#6c757d] px-3 text-sm font-medium text-white transition hover:bg-[#5c636a] disabled:cursor-not-allowed disabled:opacity-70"
-            type="submit"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Signing in...' : 'Sign in'}
-          </button>
+          <Button className="w-full" type="submit" isLoading={isLoading}>
+            Login
+          </Button>
         </form>
       </Form>
     </>
