@@ -1,6 +1,7 @@
 FROM node:22-alpine
 
 WORKDIR /app
+RUN apk add --no-cache curl
 
 COPY package.json pnpm-lock.yaml ./
 RUN npm install -g pnpm && pnpm install
@@ -18,4 +19,4 @@ ENV NODE_ENV=production
 
 EXPOSE 3000
 
-CMD ["node", "dist/src/main.js"]
+CMD ["sh", "-c", "curl -s http://localhost:3000/api/health > /dev/null || true; node dist/src/main.js"]
