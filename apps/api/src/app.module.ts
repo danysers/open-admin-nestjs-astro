@@ -14,6 +14,7 @@ import { GridService } from './grid/grid.service';
 import { FormController } from './form/form.controller';
 import { FormService } from './form/form.service';
 import { TreeController } from './tree/tree.controller';
+import { HealthController } from './health.controller';
 import { TreeService } from './tree/tree.service';
 
 @Module({
@@ -35,6 +36,7 @@ import { TreeService } from './tree/tree.service';
     GridController,
     FormController,
     TreeController,
+    HealthController,
   ],
   providers: [
     AuthService,
